@@ -1,34 +1,34 @@
 # Difference Report
 
-This report compares the original private thesis working repository with this
-clean portfolio export.
+This report summarizes the publication boundary for this clean portfolio
+export.
 
 ## Repository Scope
 
 This export keeps only the reusable code, synthetic-data pipeline, tests, and
-review-oriented documentation. It intentionally excludes the private thesis
-working tree and publishes no previous git history.
+review-oriented documentation. It intentionally excludes private working files,
+source datasets, and previous git history.
 
 | Item | Clean portfolio export |
-| --- | ---: |
-| Tracked files | 27 |
-| Tracked high-risk data/binary/notebook files | 0 |
-| Git history | Fresh single commit |
-| Remote visibility target | Private portfolio repo |
+| --- | --- |
+| Source scope | Reusable Python code, tests, and docs |
+| Data scope | Synthetic generation only |
+| High-risk tracked artifacts | None found |
+| History scope | Clean export history only |
 
 High-risk patterns checked: `.pcd`, `.npy`, `.db3`, `.bag`, `.xlsx`, `.pdf`,
 `.jpg`, `.jpeg`, `.png`, `.ipynb`, `.pptx`, `.docx`, and `.DS_Store`.
 
 ## Removed From This Export
 
-- Original `.git` history
-- Entire `thesis/` directory
+- Previous `.git` history
+- Private thesis working files
 - Real SICK/Livox point clouds and ROS bag/database files
 - Thesis notebooks and executed notebook outputs
 - Thesis draft/PDF, presentation files, reports, screenshots, generated plots
 - Vendor manuals and third-party documents
 - Non-project planning notes
-- Scripts that depend directly on private thesis data paths
+- Scripts that depend directly on private data paths
 
 ## Kept In This Export
 
@@ -54,8 +54,8 @@ Results:
 
 - No high-risk data/binary/notebook files were tracked.
 - A text scan found no machine-home paths, placeholder email/DOI values,
-  credential-like markers, unsupported production wording, private nested thesis
-  paths, or ignored-CI markers.
+  credential-like markers, unsupported production wording, private data paths,
+  or ignored-CI markers.
 - Python syntax compilation passed.
 - Lightweight unit tests passed: 12 tests.
 
