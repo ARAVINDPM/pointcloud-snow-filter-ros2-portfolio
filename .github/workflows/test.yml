@@ -1,0 +1,50 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-lock.txt
+
+    - name: Run unit tests (test_bug_fixes.py)
+      run: |
+        python -m pytest tests/test_bug_fixes.py -v --tb=short
+      continue-on-error: false
+
+    - name: Run integration tests (test_integration.py)
+      run: |
+        python -m pytest tests/test_integration.py -v --tb=short
+      continue-on-error: false
+
+    - name: Run synthetic data generation
+      run: |
+        python synthetic_data_generator.py --num_scans 2 --seed 42 --contaminate
+
+    - name: Test example workflow on synthetic data
+      run: |
+        python tools/example_workflow.py data/synthetic_snow_scans/synthetic_mannequin_000_snow.pcd results/ci_test/ || true
+
+    - name: Verify reproducibility (determinism test)
+      run: |
+        python tests/test_reproducibility.py || true
