@@ -1,4 +1,4 @@
-# LiDAR Snow Filtering for Autonomous Perception
+# LiDAR Snow Filtering Research Prototype
 
 Clean portfolio export of a master's thesis project on classical point-cloud
 outlier filtering for snow-contaminated LiDAR scans.
@@ -11,7 +11,7 @@ included.
 
 ## Scope
 
-- Pure Python filtering library; no ROS2 runtime dependency.
+- Python filtering library built on Open3D; no ROS2 runtime dependency.
 - Baseline filters: Statistical Outlier Removal (SOR) and Radius Outlier
   Removal (ROR).
 - Project-specific adaptive variants: height-adaptive SOR and
@@ -20,8 +20,8 @@ included.
 - Geometry and stability metrics for comparing filtered point clouds.
 
 The repository name keeps `ros2` because the original data collection context
-used ROS2. The code in this export can run as a standalone Python
-library.
+used ROS2. The code in this export can run without ROS2 once the Python/Open3D
+environment is installed. It is tested for Python 3.10 with Open3D 0.17.0.
 
 ## Public/Private Boundary
 
@@ -61,12 +61,13 @@ python synthetic_data_generator.py --num_scans 2 --seed 42 --contaminate
 Run the lightweight unit tests:
 
 ```bash
-python -m pytest tests/test_bug_fixes.py -q
+python -m unittest tests.test_bug_fixes -v
 ```
 
-Run integration tests when Open3D and the scientific stack are available:
+If `pytest`, Open3D, and the scientific stack are available, run:
 
 ```bash
+python -m pytest tests/test_bug_fixes.py -q
 python -m pytest tests/test_integration.py -q
 python tests/test_reproducibility.py
 ```
@@ -94,3 +95,14 @@ This is best read as a research prototype and technical portfolio artifact, not
 as a production perception stack. The code is useful for evaluating classical
 filter behavior, reproducibility, and trade-offs between geometry preservation,
 point retention, and runtime on synthetic point clouds.
+
+## Technical Decisions And Trade-Offs
+
+- Classical filters were used because they are explainable, parameter-light, and
+  suitable for inspecting geometry-preservation trade-offs.
+- Synthetic data is included so reviewers can reproduce the mechanics without
+  access to private thesis measurements.
+- Real-sensor validation belongs to the thesis context and is intentionally kept
+  outside this export.
+- Runtime, retention, and geometry metrics are treated as competing signals; the
+  repo is not claiming one universal best filter.

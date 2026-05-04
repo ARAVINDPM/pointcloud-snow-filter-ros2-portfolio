@@ -91,7 +91,7 @@ class PointCloudValidator:
 
 
 class LiDARFilters:
-    """Production-grade implementations of snow-filtering methods."""
+    """Research-prototype implementations of snow-filtering methods."""
 
     @staticmethod
     def sor(pcd: o3d.geometry.PointCloud,

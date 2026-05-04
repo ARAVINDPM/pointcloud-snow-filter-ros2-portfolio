@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pointcloud-snow-filter"
-version = "1.0.0"
+version = "0.1.0"
 description = "LiDAR snow-filtering research prototype with synthetic reproducibility tests."
 readme = "README.md"
 license = {text = "MIT"}
@@ -13,7 +13,7 @@ authors = [
 ]
 keywords = ["point-clouds", "lidar", "outlier-removal", "snow-filtering", "robotics"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",

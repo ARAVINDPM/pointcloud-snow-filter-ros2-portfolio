@@ -1,12 +1,12 @@
 cff-version: 1.2.0
 type: software
-title: "LiDAR Snow Filtering for Autonomous Perception"
+title: "LiDAR Snow Filtering Research Prototype"
 authors:
   - family-names: "Parameswaran Menon"
     given-names: "Aravind"
     affiliation: "OTH Regensburg"
 date-released: 2025-01-15
-version: 1.0.0
+version: 0.1.0
 license: "MIT"
 url: "https://github.com/ARAVINDPM/pointcloud-snow-filter-ros2-portfolio"
 repository-code: "https://github.com/ARAVINDPM/pointcloud-snow-filter-ros2-portfolio"

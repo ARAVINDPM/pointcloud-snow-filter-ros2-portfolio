@@ -34,12 +34,13 @@ point-cloud files are ignored by git.
 Fast unit test:
 
 ```bash
-python -m pytest tests/test_bug_fixes.py -q
+python -m unittest tests.test_bug_fixes -v
 ```
 
-Open3D integration tests:
+Pytest/Open3D integration tests:
 
 ```bash
+python -m pytest tests/test_bug_fixes.py -q
 python -m pytest tests/test_integration.py -q
 python tests/test_reproducibility.py
 ```

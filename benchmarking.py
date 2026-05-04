@@ -1,8 +1,8 @@
 """
-Production-grade benchmarking utilities for LiDAR filters.
+Benchmarking utilities for LiDAR filter research prototypes.
 
-Provides rigorous, reproducible performance evaluation:
-- Runtime profiling (with thread pinning, single-core enforcement)
+Provides repeatable performance evaluation:
+- Runtime profiling with warmup and repeated measurements
 - Memory tracking
 - Statistical analysis (median, mean, stddev)
 - Scaling analysis (O(N) behavior)
@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class RobustBenchmark:
-    """Rigorous benchmarking with statistical guarantees."""
+    """Repeatable benchmarking with summary statistics."""
 
     def __init__(self, repeats: int = 100, warmup: int = 3):
         """

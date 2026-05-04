@@ -5,14 +5,16 @@ clean portfolio export.
 
 ## Repository Scope
 
-| Item | Private thesis repo | Clean portfolio export |
-| --- | ---: | ---: |
-| Tracked files | 330 | 27 |
-| Files under `thesis/` | 268 | 0 |
-| Tracked high-risk data/binary/notebook files | 265 | 0 |
-| Git object store | 111.46 MiB packed | 46.56 KiB packed |
-| Git history | Full thesis working history | Fresh single commit |
-| Remote visibility target | Private source repo | Private portfolio repo |
+This export keeps only the reusable code, synthetic-data pipeline, tests, and
+review-oriented documentation. It intentionally excludes the private thesis
+working tree and publishes no previous git history.
+
+| Item | Clean portfolio export |
+| --- | ---: |
+| Tracked files | 27 |
+| Tracked high-risk data/binary/notebook files | 0 |
+| Git history | Fresh single commit |
+| Remote visibility target | Private portfolio repo |
 
 High-risk patterns checked: `.pcd`, `.npy`, `.db3`, `.bag`, `.xlsx`, `.pdf`,
 `.jpg`, `.jpeg`, `.png`, `.ipynb`, `.pptx`, `.docx`, and `.DS_Store`.
@@ -25,7 +27,7 @@ High-risk patterns checked: `.pcd`, `.npy`, `.db3`, `.bag`, `.xlsx`, `.pdf`,
 - Thesis notebooks and executed notebook outputs
 - Thesis draft/PDF, presentation files, reports, screenshots, generated plots
 - Vendor manuals and third-party documents
-- Promotion/application strategy notes
+- Non-project planning notes
 - Scripts that depend directly on private thesis data paths
 
 ## Kept In This Export
