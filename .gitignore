@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environments
+.env
+venv/
+.venv/
+thesis_env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Local data and generated outputs
+data/
+results/
+*.pcd
+*.npy
+*.npz
+*.bag
+*.db3
+*.sqlite
+*.sqlite3
+*.h5
+*.pkl
+*.pickle
+
+# Binary reports and media
+*.pdf
+*.ppt
+*.pptx
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.mov
+*.zip
+*.tar
+*.gz
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+.AppleDouble
+.LSOverride
+~*
+

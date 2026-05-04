@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+type: software
+title: "LiDAR Snow Filtering for Autonomous Perception"
+authors:
+  - family-names: "Parameswaran Menon"
+    given-names: "Aravind"
+    affiliation: "OTH Regensburg"
+date-released: 2025-01-15
+version: 1.0.0
+license: "MIT"
+url: "https://github.com/ARAVINDPM/pointcloud-snow-filter-ros2-portfolio"
+repository-code: "https://github.com/ARAVINDPM/pointcloud-snow-filter-ros2-portfolio"
+abstract: >
+  Research prototype for comparing classical and adaptive point-cloud outlier
+  filters on snow-contaminated LiDAR scans. This clean export includes code,
+  synthetic data generation, metrics, and tests. Raw thesis sensor data is not
+  redistributed.
+keywords:
+  - "point clouds"
+  - "LiDAR"
+  - "outlier removal"
+  - "snow filtering"
+  - "autonomous perception"
+  - "3D filtering"
+references:
+  - type: thesis
+    authors:
+      - family-names: "Parameswaran Menon"
+        given-names: "Aravind"
+    title: "Quantitative comparison of filter algorithms for preserving object geometry in 3D perception systems"
+    institution:
+      name: "OTH Regensburg"
+    year: 2025
