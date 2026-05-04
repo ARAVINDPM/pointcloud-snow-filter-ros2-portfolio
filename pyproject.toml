@@ -9,7 +9,7 @@ description = "LiDAR snow-filtering research prototype with synthetic reproducib
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Aravind Parameswaran Menon", email = "aravind-menon@gmx.de"},
+    {name = "Aravind Parameswaran Menon", email = "ARAVINDPM@users.noreply.github.com"},
 ]
 keywords = ["point-clouds", "lidar", "outlier-removal", "snow-filtering", "robotics"]
 classifiers = [
