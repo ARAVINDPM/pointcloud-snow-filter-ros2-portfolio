@@ -23,7 +23,7 @@ conda activate lidar-snow-filtering
 Generate two deterministic synthetic scans and snow-contaminated versions:
 
 ```bash
-python synthetic_data_generator.py --num_scans 2 --seed 42 --contaminate
+PYTHONPATH=src python -m lidar_snow_filter.synthetic_data_generator --num_scans 2 --seed 42 --contaminate
 ```
 
 This writes generated `.pcd` files under `data/`. The `data/` directory and
@@ -34,15 +34,15 @@ point-cloud files are ignored by git.
 Fast unit test:
 
 ```bash
-python -m unittest tests.test_bug_fixes -v
+PYTHONPATH=src python -m unittest tests.test_bug_fixes -v
 ```
 
 Pytest/Open3D integration tests:
 
 ```bash
-python -m pytest tests/test_bug_fixes.py -q
-python -m pytest tests/test_integration.py -q
-python tests/test_reproducibility.py
+PYTHONPATH=src python -m pytest tests/test_bug_fixes.py -q
+PYTHONPATH=src python -m pytest tests/test_integration.py -q
+PYTHONPATH=src python tests/test_reproducibility.py
 ```
 
 Example pipeline:

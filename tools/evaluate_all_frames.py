@@ -20,11 +20,14 @@ import open3d as o3d
 import logging
 
 # Setup path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from filters import LiDARFilters
-from metrics import ComprehensiveEvaluation
-from synthetic_data_generator import SyntheticMannequinGenerator, SnowContaminationSimulator
+from lidar_snow_filter.filters import LiDARFilters
+from lidar_snow_filter.metrics import ComprehensiveEvaluation
+from lidar_snow_filter.synthetic_data_generator import (
+    SyntheticMannequinGenerator,
+    SnowContaminationSimulator,
+)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -228,21 +231,21 @@ def main():
                 f_hadsor, _ = filters.dsor(contam)
 
                 if metric == "aabb_iou":
-                    from metrics import GeometryMetrics
+                    from lidar_snow_filter.metrics import GeometryMetrics
                     ror_results[metric].append(GeometryMetrics.aabb_iou(f_ror, clean))
                     hadsor_results[metric].append(GeometryMetrics.aabb_iou(f_hadsor, clean))
                 elif metric == "voxel_iou":
-                    from metrics import GeometryMetrics
+                    from lidar_snow_filter.metrics import GeometryMetrics
                     ror_results[metric].append(GeometryMetrics.voxel_iou(f_ror, clean))
                     hadsor_results[metric].append(GeometryMetrics.voxel_iou(f_hadsor, clean))
                 elif metric == "chamfer_distance_cm":
-                    from metrics import GeometryMetrics
+                    from lidar_snow_filter.metrics import GeometryMetrics
                     _, cm = GeometryMetrics.chamfer_distance(f_ror, clean)
                     ror_results[metric].append(cm if not np.isnan(cm) else 0)
                     _, cm = GeometryMetrics.chamfer_distance(f_hadsor, clean)
                     hadsor_results[metric].append(cm if not np.isnan(cm) else 0)
                 elif metric == "centroid_displacement_mm":
-                    from metrics import StabilityMetrics
+                    from lidar_snow_filter.metrics import StabilityMetrics
                     ror_results[metric].append(StabilityMetrics.centroid_displacement(f_ror, clean) * 1000)
                     hadsor_results[metric].append(StabilityMetrics.centroid_displacement(f_hadsor, clean) * 1000)
             except Exception as e:

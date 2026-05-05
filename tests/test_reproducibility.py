@@ -5,10 +5,13 @@ import sys
 from pathlib import Path
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from synthetic_data_generator import SyntheticMannequinGenerator, SnowContaminationSimulator
-from filters import LiDARFilters
+from lidar_snow_filter.synthetic_data_generator import (
+    SyntheticMannequinGenerator,
+    SnowContaminationSimulator,
+)
+from lidar_snow_filter.filters import LiDARFilters
 
 
 def test_synthetic_data_reproducible():

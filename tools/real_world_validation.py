@@ -1,9 +1,12 @@
 """
-Real-World Validation: Thesis vs Variant Implementations on Actual SICK/Livox Data
-Compare algorithms on real sensor data from master's thesis experiments
+Real-World Validation: thesis vs variant implementations on local SICK/Livox data.
+
+Requires local private sensor data via THESIS_DATA_ROOT. The data is not
+included in this public export.
 """
 
 import os
+import sys
 import json
 import numpy as np
 import open3d as o3d
@@ -20,8 +23,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Import implementations
-from filters import LiDARFilters
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT / "src"))
+
+from lidar_snow_filter.filters import LiDARFilters
 
 # Attempt to import thesis original filters (not included in public repo)
 try:
@@ -36,11 +41,10 @@ except ImportError:
 class RealWorldValidator:
     """Validate filter implementations on actual thesis sensor data."""
 
-    def __init__(self, output_dir: str = "."):
-        self.output_dir = Path(output_dir)
+    def __init__(self, output_dir: str = None):
+        self.output_dir = Path(output_dir) if output_dir else REPO_ROOT / "results" / "real_world_validation"
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        _repo_root = Path(__file__).resolve().parent
-        self.thesis_data_root = Path(os.environ.get("THESIS_DATA_ROOT", _repo_root / "thesis/thesis/thesis/1Results"))
+        self.thesis_data_root = Path(os.environ.get("THESIS_DATA_ROOT", REPO_ROOT / "data" / "private_thesis" / "1Results"))
         self.results = {}
 
     def find_data_files(self) -> dict:
@@ -217,7 +221,7 @@ class RealWorldValidator:
         data_files = self.find_data_files()
 
         if not data_files["livox_clear"] and not data_files["livox_snow"]:
-            logger.error("No data files found! Check thesis folder structure.")
+            logger.error("No data files found. Set THESIS_DATA_ROOT to your local private sensor-data export.")
             return
 
         all_results = {

@@ -1,18 +1,21 @@
 """
-benchmark_comparison.py — Cross-implementation runtime comparison.
+benchmark_comparison.py - Cross-implementation runtime comparison.
 
 Benchmarks all 4 filters on SICK-equivalent and Livox scans,
-then produces benchmark_comparison.png.
+then produces a benchmark comparison figure.
 
 Usage:
-    python benchmark_comparison.py
-    python benchmark_comparison.py --n-runs 50 --output results/my_benchmark.png
+    PYTHONPATH=src python tools/benchmark_comparison.py
+    PYTHONPATH=src python tools/benchmark_comparison.py --n-runs 50 --output results/my_benchmark.png
 
-Requires: thesis/ data directory (see REPRODUCIBILITY_GUIDE.md)
+Requires local private sensor data via THESIS_DATA_ROOT. The data is not
+included in this public export.
 """
 
 import argparse
 import logging
+import os
+import sys
 import time
 from pathlib import Path
 
@@ -22,12 +25,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 import open3d as o3d
 
-from filters import LiDARFilters
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT / "src"))
+
+from lidar_snow_filter.filters import LiDARFilters
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 log = logging.getLogger(__name__)
 
-THESIS_DATA = Path(__file__).parent / "thesis/thesis/thesis/1Results"
+THESIS_DATA = Path(os.environ.get("THESIS_DATA_ROOT", REPO_ROOT / "data" / "private_thesis" / "1Results"))
 
 # Other implementations from literature (µs/pt, None = not reported)
 OTHER_IMPLS = {
@@ -60,7 +66,7 @@ def run(n_runs: int, output: str):
 
     for p in [sick_path, livox_path]:
         if not p.exists():
-            log.error(f"Missing data: {p}\nSee REPRODUCIBILITY_GUIDE.md for setup.")
+            log.error(f"Missing data: {p}\nSet THESIS_DATA_ROOT to your local private sensor-data export.")
             raise SystemExit(1)
 
     sick_pcd  = o3d.io.read_point_cloud(str(sick_path))
@@ -136,7 +142,7 @@ def run(n_runs: int, output: str):
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--n-runs", type=int, default=100, help="Benchmark iterations per filter (default: 100)")
-    parser.add_argument("--output", default="benchmark_comparison.png", help="Output PNG path")
+    parser.add_argument("--output", default="results/benchmark_comparison.png", help="Output PNG path")
     args = parser.parse_args()
     run(args.n_runs, args.output)
 

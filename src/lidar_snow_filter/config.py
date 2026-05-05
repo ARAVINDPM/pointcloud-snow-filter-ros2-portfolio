@@ -11,7 +11,7 @@ import os
 # ============================================================================
 # PROJECT ROOT
 # ============================================================================
-PROJECT_ROOT = Path(__file__).parent.resolve()
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 # ============================================================================
 # DATA DIRECTORIES (for local testing; paths should be set relative to repo)

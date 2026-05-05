@@ -48,12 +48,5 @@ Documentation = "https://github.com/ARAVINDPM/pointcloud-snow-filter-ros2-portfo
 Repository = "https://github.com/ARAVINDPM/pointcloud-snow-filter-ros2-portfolio.git"
 Issues = "https://github.com/ARAVINDPM/pointcloud-snow-filter-ros2-portfolio/issues"
 
-[tool.setuptools]
-py-modules = [
-    "filters",
-    "metrics",
-    "benchmarking",
-    "config",
-    "synthetic_data_generator",
-    "contaminate_with_synthetic_snow",
-]
+[tool.setuptools.packages.find]
+where = ["src"]

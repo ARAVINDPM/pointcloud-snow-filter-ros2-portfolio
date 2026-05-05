@@ -27,10 +27,10 @@ environment is installed. It is tested for Python 3.10 with Open3D 0.17.0.
 
 Included:
 
-- `filters.py`, `metrics.py`, `benchmarking.py`, `config.py`
-- `synthetic_data_generator.py`, `contaminate_with_synthetic_snow.py`
+- Python package under `src/lidar_snow_filter/`
 - Selected tools under `tools/`
 - Tests under `tests/`
+- Audit and reproducibility notes under `docs/`
 - Packaging and environment files
 
 Excluded:
@@ -55,21 +55,21 @@ python -m pip install -r requirements-lock.txt
 Generate synthetic clear and snow-contaminated point clouds:
 
 ```bash
-python synthetic_data_generator.py --num_scans 2 --seed 42 --contaminate
+PYTHONPATH=src python -m lidar_snow_filter.synthetic_data_generator --num_scans 2 --seed 42 --contaminate
 ```
 
 Run the lightweight unit tests:
 
 ```bash
-python -m unittest tests.test_bug_fixes -v
+PYTHONPATH=src python -m unittest tests.test_bug_fixes -v
 ```
 
 If `pytest`, Open3D, and the scientific stack are available, run:
 
 ```bash
-python -m pytest tests/test_bug_fixes.py -q
-python -m pytest tests/test_integration.py -q
-python tests/test_reproducibility.py
+PYTHONPATH=src python -m pytest tests/test_bug_fixes.py -q
+PYTHONPATH=src python -m pytest tests/test_integration.py -q
+PYTHONPATH=src python tests/test_reproducibility.py
 ```
 
 Run the example pipeline on generated synthetic data:
@@ -82,12 +82,13 @@ python tools/example_workflow.py data/synthetic_snow_scans/synthetic_mannequin_0
 
 | File | Purpose |
 | --- | --- |
-| `filters.py` | SOR, ROR, height-adaptive SOR, and azimuth-adaptive ROR implementations |
-| `metrics.py` | AABB IoU, voxel IoU, Chamfer distance, centroid displacement, and retention metrics |
-| `benchmarking.py` | Repeatable runtime measurement helpers |
-| `synthetic_data_generator.py` | Synthetic mannequin and snow-contamination generator |
+| `src/lidar_snow_filter/filters.py` | SOR, ROR, height-adaptive SOR, and azimuth-adaptive ROR implementations |
+| `src/lidar_snow_filter/metrics.py` | AABB IoU, voxel IoU, Chamfer distance, centroid displacement, and retention metrics |
+| `src/lidar_snow_filter/benchmarking.py` | Repeatable runtime measurement helpers |
+| `src/lidar_snow_filter/synthetic_data_generator.py` | Synthetic mannequin and snow-contamination generator |
 | `tools/example_workflow.py` | End-to-end filtering and metric export on a `.pcd` file |
 | `tests/` | Lightweight unit tests plus Open3D integration/reproducibility tests |
+| `docs/` | Publication audit and reproducibility boundary |
 
 ## Notes For Reviewers
 

@@ -5,19 +5,19 @@ Generates synthetic point clouds and produces comparison plots.
 """
 
 import sys
-from pathlib import Path as _Path
-sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
+from pathlib import Path
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT / "src"))
 import logging
 import numpy as np
 import open3d as o3d
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
-from pathlib import Path
 
-from config import RESULTS_DIR
-from filters import LiDARFilters
-from benchmarking import RobustBenchmark
-from metrics import ComprehensiveEvaluation
+from lidar_snow_filter.config import RESULTS_DIR
+from lidar_snow_filter.filters import LiDARFilters
+from lidar_snow_filter.benchmarking import RobustBenchmark
+from lidar_snow_filter.metrics import ComprehensiveEvaluation
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

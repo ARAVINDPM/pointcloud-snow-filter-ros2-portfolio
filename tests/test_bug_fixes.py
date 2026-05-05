@@ -3,8 +3,11 @@
 
 import sys
 import unittest
+from pathlib import Path
 from unittest.mock import Mock, MagicMock, patch
 import numpy as np
+
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 
 def setUpModule():
@@ -91,7 +94,7 @@ class TestRetentionMetricFix(unittest.TestCase):
 
     def test_evaluate_accepts_original_input_points(self):
         """Verify evaluate() signature includes original_input_points parameter."""
-        from metrics import ComprehensiveEvaluation
+        from lidar_snow_filter.metrics import ComprehensiveEvaluation
         import inspect
 
         sig = inspect.signature(ComprehensiveEvaluation.evaluate)
@@ -125,7 +128,7 @@ class TestBenchmarkingScaleFactors(unittest.TestCase):
 
     def test_default_scale_factors_in_valid_range(self):
         """Verify default scale_factors are 0-1 for Open3D compatibility."""
-        from benchmarking import FilterBenchmark
+        from lidar_snow_filter.benchmarking import FilterBenchmark
         import inspect
 
         sig = inspect.signature(FilterBenchmark.benchmark_scaling)
@@ -216,7 +219,7 @@ class TestDSORSourceCodeFix(unittest.TestCase):
         """Verify filters.py has the fixed boundary condition."""
         from pathlib import Path
 
-        filters_py = Path(__file__).parent.parent / "filters.py"
+        filters_py = Path(__file__).parent.parent / "src" / "lidar_snow_filter" / "filters.py"
         content = filters_py.read_text()
 
         # Should have the if/else for last bin
@@ -242,7 +245,7 @@ class TestChamferSourceCodeFix(unittest.TestCase):
         """Verify metrics.py returns NaN instead of 0.0."""
         from pathlib import Path
 
-        metrics_py = Path(__file__).parent.parent / "metrics.py"
+        metrics_py = Path(__file__).parent.parent / "src" / "lidar_snow_filter" / "metrics.py"
         content = metrics_py.read_text()
 
         # Count return 0.0 statements in error handling

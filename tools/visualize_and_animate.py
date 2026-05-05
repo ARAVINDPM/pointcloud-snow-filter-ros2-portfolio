@@ -11,13 +11,13 @@ Usage:
 
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT / "src"))
 
 import logging
 import argparse
 import numpy as np
 import open3d as o3d
-from pathlib import Path
 
 try:
     import imageio
@@ -25,8 +25,8 @@ try:
 except ImportError:
     HAS_IMAGEIO = False
 
-from filters import LiDARFilters
-from config import RESULTS_DIR
+from lidar_snow_filter.filters import LiDARFilters
+from lidar_snow_filter.config import RESULTS_DIR
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger(__name__)

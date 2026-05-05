@@ -11,9 +11,9 @@ import matplotlib.pyplot as plt
 import json
 from datetime import datetime
 import sys
-from pathlib import Path as _Path
-sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
-from filters import LiDARFilters
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from lidar_snow_filter.filters import LiDARFilters
 
 print("\n" + "="*80)
 print("DENSITY PROXY vs HEIGHT-BASED DSOR ANALYSIS")
@@ -78,8 +78,7 @@ def dsor_density_proxy(pcd, min_ratio=1.5, nb_neighbors=20, rho_max=3.0):
 
 
 # Test on real Livox clear scans
-_REPO_ROOT = Path(__file__).resolve().parent.parent
-livox_dir = Path(os.environ.get("LIVOX_CLEAR_DIR", _REPO_ROOT / "thesis/thesis/thesis/1Results/livox/clear 10 scans"))
+livox_dir = Path(os.environ.get("LIVOX_CLEAR_DIR", REPO_ROOT / "data" / "private_thesis" / "1Results" / "livox" / "clear 10 scans"))
 scan_files = sorted(list(livox_dir.glob("*clear*.pcd")))[:3]
 
 print(f"\nFound {len(scan_files)} scan files for testing\n")
@@ -228,10 +227,14 @@ if comparison_data:
         }
     }
 
-    with open(_REPO_ROOT / 'density_vs_height_results.json', 'w') as f:
+    output_dir = REPO_ROOT / "results" / "density_vs_height"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / "density_vs_height_results.json"
+
+    with open(output_file, 'w') as f:
         json.dump(results_json, f, indent=2)
 
-    print(f"\n✓ Results saved: density_vs_height_results.json")
+    print(f"\n✓ Results saved: {output_file}")
 else:
     print("✗ No comparison data collected. Check errors above.")
 

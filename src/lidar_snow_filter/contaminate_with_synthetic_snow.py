@@ -4,7 +4,7 @@ Synthetic Snow Contamination Generator.
 Adds realistic snow noise patterns to clean LiDAR scans for testing filter robustness.
 
 Usage:
-    python contaminate_with_synthetic_snow.py \
+    python -m lidar_snow_filter.contaminate_with_synthetic_snow \
         --input_dir data/synthetic_clear_scans \
         --output_dir data/synthetic_snow_scans \
         --snow_density 0.3

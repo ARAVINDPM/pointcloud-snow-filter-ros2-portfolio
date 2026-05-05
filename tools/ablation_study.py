@@ -15,12 +15,12 @@ Output:
 """
 
 import sys
-from pathlib import Path as _Path
-sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
+from pathlib import Path
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT / "src"))
 import json
 import numpy as np
 import open3d as o3d
-from pathlib import Path
 from datetime import datetime
 import time
 import logging
@@ -32,8 +32,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Import both implementations
-from filters import LiDARFilters
+from lidar_snow_filter.filters import LiDARFilters
 
 try:
     from filters_thesis_originals import ThesisOriginalFilters
@@ -421,7 +420,7 @@ if __name__ == "__main__":
     }
 
     # Run ablation study
-    ablation = AblationStudy(output_dir=".")
+    ablation = AblationStudy(output_dir=REPO_ROOT / "results" / "ablation_study")
     results = ablation.run_ablation(scenarios, repeats_per_filter=10)
 
     # Save results

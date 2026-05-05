@@ -5,7 +5,7 @@ Generates synthetic mannequin point clouds and snow-contaminated versions
 for independent validation and reproducibility testing.
 
 Usage:
-    python synthetic_data_generator.py --num_scans 10 --seed 42
+    python -m lidar_snow_filter.synthetic_data_generator --num_scans 10 --seed 42
 """
 
 import numpy as np

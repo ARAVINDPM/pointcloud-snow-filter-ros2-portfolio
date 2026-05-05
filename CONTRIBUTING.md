@@ -17,10 +17,10 @@ so contributions should keep the publication boundary intact.
 ## Development Checks
 
 ```bash
-python -m py_compile filters.py metrics.py benchmarking.py synthetic_data_generator.py
-python -m pytest tests/test_bug_fixes.py -q
-python -m pytest tests/test_integration.py -q
-python tests/test_reproducibility.py
+PYTHONPATH=src python -m py_compile src/lidar_snow_filter/*.py tools/*.py
+PYTHONPATH=src python -m pytest tests/test_bug_fixes.py -q
+PYTHONPATH=src python -m pytest tests/test_integration.py -q
+PYTHONPATH=src python tests/test_reproducibility.py
 ```
 
 The integration and reproducibility tests require Open3D and the scientific

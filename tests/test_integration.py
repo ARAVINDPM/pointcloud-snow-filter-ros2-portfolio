@@ -8,11 +8,14 @@ from pathlib import Path
 import numpy as np
 import open3d as o3d
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from filters import LiDARFilters, PointCloudValidator
-from metrics import GeometryMetrics, StabilityMetrics, ComprehensiveEvaluation
-from synthetic_data_generator import SyntheticMannequinGenerator, SnowContaminationSimulator
+from lidar_snow_filter.filters import LiDARFilters, PointCloudValidator
+from lidar_snow_filter.metrics import GeometryMetrics, StabilityMetrics, ComprehensiveEvaluation
+from lidar_snow_filter.synthetic_data_generator import (
+    SyntheticMannequinGenerator,
+    SnowContaminationSimulator,
+)
 
 
 class TestPointCloudValidation(unittest.TestCase):

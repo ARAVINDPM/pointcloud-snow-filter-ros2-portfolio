@@ -14,19 +14,19 @@ Usage:
 
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT / "src"))
 import logging
 import json
-from pathlib import Path
 from datetime import datetime
 
 import open3d as o3d
 import numpy as np
 
-from config import *
-from filters import LiDARFilters, load_and_filter
-from benchmarking import FilterBenchmark, RobustBenchmark
-from metrics import ComprehensiveEvaluation
+from lidar_snow_filter.config import *
+from lidar_snow_filter.filters import LiDARFilters, load_and_filter
+from lidar_snow_filter.benchmarking import FilterBenchmark, RobustBenchmark
+from lidar_snow_filter.metrics import ComprehensiveEvaluation
 
 # Setup logging
 logging.basicConfig(
