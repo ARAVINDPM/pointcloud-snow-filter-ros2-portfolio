@@ -146,9 +146,18 @@ class LiDARFilters:
             raise
 
     @staticmethod
+    def _auto_radius(pcd: o3d.geometry.PointCloud, k: float = 3.0) -> float:
+        """Scale-invariant search radius: k x median nearest-neighbor distance."""
+        nn = np.asarray(pcd.compute_nearest_neighbor_distance())
+        nn = nn[np.isfinite(nn) & (nn > 0)]
+        if len(nn) == 0:
+            raise ValueError("Cannot estimate radius: degenerate point cloud")
+        return float(k * np.median(nn))
+
+    @staticmethod
     def ror(pcd: o3d.geometry.PointCloud,
             nb_points: int = 5,
-            radius: float = 0.05) -> Tuple[o3d.geometry.PointCloud, dict]:
+            radius: Optional[float] = None) -> Tuple[o3d.geometry.PointCloud, dict]:
         """
         Radius Outlier Removal (ROR).
 
@@ -158,7 +167,9 @@ class LiDARFilters:
         Args:
             pcd: Input point cloud
             nb_points: Minimum neighbors required within radius
-            radius: Search radius (meters)
+            radius: Search radius in the cloud's own units. If None (default),
+                auto-estimated as 3x the median nearest-neighbor distance,
+                making the default scale-invariant (works for m- or cm-unit clouds).
 
         Returns:
             (filtered_cloud, metadata) tuple
@@ -170,6 +181,9 @@ class LiDARFilters:
 
         if nb_points < 1:
             raise ValueError(f"nb_points must be >= 1, got {nb_points}")
+        if radius is None:
+            radius = LiDARFilters._auto_radius(pcd)
+            logger.info(f"ROR: auto radius = {radius:.4f} (3x median NN distance)")
         if radius <= 0:
             raise ValueError(f"radius must be > 0, got {radius}")
 
@@ -277,7 +291,8 @@ class LiDARFilters:
     @staticmethod
     def dror(pcd: o3d.geometry.PointCloud,
              sector_count: int = 12,
-             scale_factor: float = 1.5) -> Tuple[o3d.geometry.PointCloud, dict]:
+             scale_factor: float = 1.5,
+             base_radius: Optional[float] = None) -> Tuple[o3d.geometry.PointCloud, dict]:
         """
         Azimuth-Adaptive Radius Outlier Removal (HA-DROR).
 
@@ -285,7 +300,7 @@ class LiDARFilters:
         ROR with per-sector adaptive radius. Handles varying point density across
         horizontal scanning patterns (sparse regions need larger search radii).
 
-        Each sector computes: radius = 0.05 * (density / mean_density)^(-1/3)
+        Each sector computes: radius = base_radius * (density / mean_density)^(-1/3)
         Then applies: ROR with radius *= scale_factor
 
         This is distinct from Charron 2018's range-adaptive ROR, which scales
@@ -295,6 +310,9 @@ class LiDARFilters:
             pcd: Input point cloud
             sector_count: Number of azimuthal sectors (tuned to 12 for 360° / 30° each)
             scale_factor: Multiplier for adaptive radius (tuned to 1.5 for snow filtering)
+            base_radius: Base search radius in the cloud's own units. If None
+                (default), auto-estimated as 3x the median nearest-neighbor
+                distance (scale-invariant).
 
         Returns:
             (filtered_cloud, metadata) tuple
@@ -303,6 +321,12 @@ class LiDARFilters:
 
         if sector_count < 4:
             raise ValueError(f"sector_count must be >= 4, got {sector_count}")
+
+        if base_radius is None:
+            base_radius = LiDARFilters._auto_radius(pcd)
+            logger.info(f"DROR: auto base_radius = {base_radius:.4f} (3x median NN distance)")
+        if base_radius <= 0:
+            raise ValueError(f"base_radius must be > 0, got {base_radius}")
 
         points = np.asarray(pcd.points)
         input_size = len(points)
@@ -328,8 +352,8 @@ class LiDARFilters:
 
                 # Adaptive radius based on local density
                 density = len(sector_indices) / max(1, (az_high - az_low))
-                radius = 0.05 * (density / (input_size / sector_count)) ** (-1 / 3)
-                radius = np.clip(radius, 0.02, 0.15)
+                radius = base_radius * (density / (input_size / sector_count)) ** (-1 / 3)
+                radius = np.clip(radius, 0.4 * base_radius, 3.0 * base_radius)
 
                 cl, ind = sector_cloud.remove_radius_outlier(
                     nb_points=5,
@@ -346,7 +370,7 @@ class LiDARFilters:
                 "input_points": input_size,
                 "output_points": len(filtered.points),
                 "retention_pct": (len(filtered.points) / input_size * 100),
-                "parameters": {"sector_count": sector_count, "scale_factor": scale_factor}
+                "parameters": {"sector_count": sector_count, "scale_factor": scale_factor, "base_radius": base_radius}
             }
             return filtered, metadata
 

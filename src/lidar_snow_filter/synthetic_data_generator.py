@@ -131,7 +131,7 @@ class SyntheticMannequinGenerator:
             points: Nx3 array of points
 
         Returns:
-            Quantized points
+            Quantized points (one return per angular bin, nearest kept)
         """
         # Convert to spherical coordinates
         distances = np.linalg.norm(points, axis=1)
@@ -141,6 +141,20 @@ class SyntheticMannequinGenerator:
         # Quantize angles to sensor resolution
         theta_q = np.round(np.degrees(theta) / self.h_res) * self.h_res
         phi_q = np.round(np.degrees(phi) / self.v_res) * self.v_res
+
+        # Deduplicate: real sensors return at most one point per angular bin.
+        # Keep the nearest return in each (azimuth, elevation) bin. This makes
+        # output point counts depend on sensor angular resolution.
+        ti = np.round(np.degrees(theta) / self.h_res).astype(np.int64)
+        pi = np.round(np.degrees(phi) / self.v_res).astype(np.int64)
+        bins = np.column_stack([ti, pi])
+        order = np.argsort(distances, kind="stable")
+        _, first = np.unique(bins[order], axis=0, return_index=True)
+        keep = np.sort(order[first])
+
+        distances = distances[keep]
+        theta_q = theta_q[keep]
+        phi_q = phi_q[keep]
 
         # Convert back to Cartesian
         theta_rad = np.radians(theta_q)

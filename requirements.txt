@@ -13,7 +13,7 @@ open3d==0.17.0
 matplotlib>=3.4.0
 
 # Utilities
-scikit-learn>=1.0.0
+scikit-learn>=1.5.0
 
 # Tests
-pytest>=7.4.0
+pytest>=9.0.3
