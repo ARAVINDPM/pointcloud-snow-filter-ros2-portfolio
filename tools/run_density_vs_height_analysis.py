@@ -7,7 +7,6 @@ import os
 import numpy as np
 import open3d as o3d
 from pathlib import Path
-import matplotlib.pyplot as plt
 import json
 from datetime import datetime
 import sys
@@ -138,7 +137,7 @@ for scan_idx, scan_file in enumerate(scan_files, 1):
     # Compare
     if ret_height is not None and ret_density is not None:
         diff = ret_density - ret_height
-        print(f"\n  COMPARISON:")
+        print("\n  COMPARISON:")
         print(f"    Height-Based:   {ret_height:6.2f}%")
         print(f"    Density-Proxy:  {ret_density:6.2f}%")
         print(f"    Difference:     {diff:+6.2f}%")
@@ -163,7 +162,7 @@ if comparison_data:
 
     print(df[['scan', 'points', 'correlation', 'height_retention', 'density_retention', 'difference']].to_string(index=False))
 
-    print(f"\nSTATISTICS:")
+    print("\nSTATISTICS:")
     print(f"  Avg Height-Based Retention:  {df['height_retention'].mean():.2f}%")
     print(f"  Avg Density-Proxy Retention: {df['density_retention'].mean():.2f}%")
     print(f"  Avg Difference:              {df['difference'].mean():+.2f}%")
@@ -180,22 +179,22 @@ if comparison_data:
 
     print(f"Height-Density Correlation: {avg_corr:.3f}")
     if abs(avg_corr) > 0.7:
-        print(f"  ✅ STRONG: Height is a valid proxy for density")
+        print("  ✅ STRONG: Height is a valid proxy for density")
     elif abs(avg_corr) > 0.5:
-        print(f"  ⚠️  MODERATE: Height provides reasonable proxy")
+        print("  ⚠️  MODERATE: Height provides reasonable proxy")
     else:
-        print(f"  ❌ WEAK: Height is NOT a good density proxy")
+        print("  ❌ WEAK: Height is NOT a good density proxy")
 
     print(f"\nRetention Difference: {avg_diff:+.2f}%")
     if abs(avg_diff) < 2:
-        print(f"  ✅ NEGLIGIBLE: Both methods are equivalent")
-        print(f"  → Height-based IS a valid practical simplification of density-aware")
+        print("  ✅ NEGLIGIBLE: Both methods are equivalent")
+        print("  → Height-based IS a valid practical simplification of density-aware")
     elif abs(avg_diff) < 5:
-        print(f"  ⚠️  MODERATE: Some difference in behavior")
-        print(f"  → Height-based and density-aware are different approaches")
+        print("  ⚠️  MODERATE: Some difference in behavior")
+        print("  → Height-based and density-aware are different approaches")
     else:
-        print(f"  ❌ SIGNIFICANT: Methods behave very differently")
-        print(f"  → Height-based does NOT approximate density-aware")
+        print("  ❌ SIGNIFICANT: Methods behave very differently")
+        print("  → Height-based does NOT approximate density-aware")
 
     # Recommendation
     print(f"\n{'='*80}")

@@ -16,7 +16,6 @@ from pathlib import Path
 import logging
 import argparse
 import json
-from typing import Tuple
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

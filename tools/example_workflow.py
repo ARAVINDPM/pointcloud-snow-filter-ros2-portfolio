@@ -21,11 +21,10 @@ import json
 from datetime import datetime
 
 import open3d as o3d
-import numpy as np
 
-from lidar_snow_filter.config import *
-from lidar_snow_filter.filters import LiDARFilters, load_and_filter
-from lidar_snow_filter.benchmarking import FilterBenchmark, RobustBenchmark
+from lidar_snow_filter.config import RESULTS_DIR
+from lidar_snow_filter.filters import LiDARFilters
+from lidar_snow_filter.benchmarking import RobustBenchmark
 from lidar_snow_filter.metrics import ComprehensiveEvaluation
 
 # Setup logging
@@ -105,8 +104,6 @@ def main(input_pcd_path: str, output_dir: str = None):
     logger.info("Performance Benchmarking")
     logger.info("="*60)
 
-    benchmark_runner = FilterBenchmark()
-
     for filter_name, filter_func in filters_to_run:
         if filter_name not in filtered_clouds:
             continue
@@ -115,14 +112,10 @@ def main(input_pcd_path: str, output_dir: str = None):
 
         try:
             # Extract the actual filter function
-            if filter_name == 'SOR':
-                func = lambda p: LiDARFilters.sor(p)[0]
-            elif filter_name == 'ROR':
-                func = lambda p: LiDARFilters.ror(p)[0]
-            elif filter_name == 'DSOR':
-                func = lambda p: LiDARFilters.dsor(p)[0]
-            elif filter_name == 'DROR':
-                func = lambda p: LiDARFilters.dror(p)[0]
+            method = getattr(LiDARFilters, filter_name.lower())
+
+            def func(p, _m=method):
+                return _m(p)[0]
 
             benchmark = RobustBenchmark(repeats=50, warmup=2)
             median_time, stats = benchmark.run(func, pcd_input)
@@ -212,14 +205,16 @@ def main(input_pcd_path: str, output_dir: str = None):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print(f"Usage: {sys.argv[0]} <input_pcd> [output_dir]")
-        print(f"\nExample:")
-        print(f"  {sys.argv[0]} data/snow_scans/cloud.pcd")
-        sys.exit(1)
+    import argparse
 
-    input_file = sys.argv[1]
-    output_dir = sys.argv[2] if len(sys.argv) > 2 else None
+    parser = argparse.ArgumentParser(
+        description="Run all four filters + metrics + benchmarks on a PCD file.",
+        epilog="Example: python tools/example_workflow.py data/snow_scans/cloud.pcd",
+    )
+    parser.add_argument("input_pcd", help="Path to input .pcd file")
+    parser.add_argument("output_dir", nargs="?", default=None,
+                        help="Output directory (default: ./results)")
+    args = parser.parse_args()
 
-    success = main(input_file, output_dir)
+    success = main(args.input_pcd, args.output_dir)
     sys.exit(0 if success else 1)

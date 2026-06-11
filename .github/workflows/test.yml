@@ -9,42 +9,52 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.10", "3.11", "3.12"]
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install dependencies
+    - name: Install dependencies (locked, 3.10 reference env)
+      if: matrix.python-version == '3.10'
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements-lock.txt
 
-    - name: Run unit tests (test_bug_fixes.py)
+    - name: Install dependencies (ranged, newer Pythons)
+      if: matrix.python-version != '3.10'
       run: |
-        PYTHONPATH=src python -m pytest tests/test_bug_fixes.py -v --tb=short
-      continue-on-error: false
+        python -m pip install --upgrade pip
+        pip install -e .
+        pip install pytest pytest-cov
 
-    - name: Run integration tests (test_integration.py)
+    - name: Install package and tools
       run: |
-        PYTHONPATH=src python -m pytest tests/test_integration.py -v --tb=short
-      continue-on-error: false
+        pip install -e .
+        pip install pytest-cov ruff
+
+    - name: Lint
+      run: ruff check src/ tests/ tools/
+
+    - name: Run test suite with coverage
+      run: |
+        PYTHONPATH=src python -m pytest tests/ -v --tb=short --cov=lidar_snow_filter --cov-report=term
 
     - name: Run synthetic data generation
       run: |
         PYTHONPATH=src python -m lidar_snow_filter.synthetic_data_generator --num_scans 2 --seed 42 --contaminate
 
-    - name: Test example workflow on synthetic data
+    - name: Run demo (renders comparison figure)
       run: |
-        PYTHONPATH=src python tools/example_workflow.py data/synthetic_snow_scans/synthetic_mannequin_000_snow.pcd results/ci_test/ || true
+        PYTHONPATH=src python tools/demo.py --out /tmp/demo.png
 
     - name: Verify reproducibility (determinism test)
       run: |
-        PYTHONPATH=src python tests/test_reproducibility.py || true
+        PYTHONPATH=src python tests/test_reproducibility.py

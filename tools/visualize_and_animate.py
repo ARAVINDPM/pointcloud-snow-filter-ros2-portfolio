@@ -54,7 +54,6 @@ class PointCloudVisualizer:
         """
         try:
             import matplotlib.pyplot as plt
-            from mpl_toolkits.mplot3d import Axes3D
         except ImportError:
             logger.error("matplotlib required for visualization: pip install matplotlib")
             return None
@@ -176,7 +175,6 @@ class PointCloudVisualizer:
         """
         try:
             import matplotlib.pyplot as plt
-            from mpl_toolkits.mplot3d import Axes3D
         except ImportError:
             logger.error("matplotlib required")
             return False

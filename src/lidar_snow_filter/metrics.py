@@ -267,7 +267,7 @@ class ComprehensiveEvaluation:
                 'coordinate_distribution': coord_stats
             }
 
-            logger.info(f"\nEvaluation Summary:")
+            logger.info("\nEvaluation Summary:")
             logger.info(f"  AABB IoU: {aabb_iou:.4f}")
             logger.info(f"  Voxel IoU: {voxel_iou:.4f}")
             logger.info(f"  Chamfer: {chamfer_cm:.2f} cm")

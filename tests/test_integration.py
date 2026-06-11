@@ -3,7 +3,6 @@
 
 import sys
 import unittest
-import tempfile
 from pathlib import Path
 import numpy as np
 import open3d as o3d
@@ -329,6 +328,33 @@ class TestEndToEndPipeline(unittest.TestCase):
             )
             self.assertGreater(results["aabb_iou"], 0)
             self.assertGreater(results["retention_pct"], 0)
+
+
+class TestInputValidation(unittest.TestCase):
+    """Non-finite points must be rejected, not silently processed."""
+
+    def _cloud(self, pts):
+        pcd = o3d.geometry.PointCloud()
+        pcd.points = o3d.utility.Vector3dVector(np.asarray(pts, dtype=float))
+        return pcd
+
+    def test_inf_points_rejected(self):
+        pcd = self._cloud([[np.inf, 0, 0], [1, 1, 1], [2, 2, 2]])
+        with self.assertRaises(ValueError):
+            LiDARFilters.sor(pcd)
+
+    def test_nan_points_rejected(self):
+        pcd = self._cloud([[np.nan, 0, 0], [1, 1, 1], [2, 2, 2]])
+        with self.assertRaises(ValueError):
+            LiDARFilters.sor(pcd)
+
+    def test_empty_cloud_rejected(self):
+        with self.assertRaises(ValueError):
+            LiDARFilters.sor(o3d.geometry.PointCloud())
+
+    def test_wrong_type_rejected(self):
+        with self.assertRaises(TypeError):
+            LiDARFilters.sor(np.zeros((10, 3)))
 
 
 if __name__ == "__main__":

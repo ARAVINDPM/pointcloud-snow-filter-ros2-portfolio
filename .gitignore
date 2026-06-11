@@ -58,3 +58,7 @@ results/
 .LSOverride
 ~*
 
+
+# Keep README/demo assets (exception to *.png rule above)
+!docs/assets/*.png
+.coverage

@@ -6,7 +6,6 @@ without hardcoded paths.
 """
 
 from pathlib import Path
-import os
 
 # ============================================================================
 # PROJECT ROOT

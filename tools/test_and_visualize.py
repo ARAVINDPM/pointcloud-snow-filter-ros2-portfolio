@@ -12,7 +12,6 @@ import logging
 import numpy as np
 import open3d as o3d
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
 
 from lidar_snow_filter.config import RESULTS_DIR
 from lidar_snow_filter.filters import LiDARFilters

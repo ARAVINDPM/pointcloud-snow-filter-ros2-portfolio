@@ -51,7 +51,6 @@ def generate_multi_frame_dataset(
     """
     logger.info(f"Generating {num_frames} frames (seed={seed}, sensor={sensor})...")
 
-    generator = SyntheticMannequinGenerator(sensor=sensor, seed=seed)
     contaminator = SnowContaminationSimulator(seed=seed)
 
     clean_frames = []

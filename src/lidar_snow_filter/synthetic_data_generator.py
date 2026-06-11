@@ -13,7 +13,6 @@ import open3d as o3d
 from pathlib import Path
 import logging
 import argparse
-from typing import Tuple, List
 import json
 
 logging.basicConfig(level=logging.INFO)

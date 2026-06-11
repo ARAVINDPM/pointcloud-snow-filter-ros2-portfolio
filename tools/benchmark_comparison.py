@@ -107,7 +107,7 @@ def run(n_runs: int, output: str):
 
     b1 = ax.bar(x - w/2, sick_m,  w, color=colors, alpha=0.9,
                 label=f"SICK ({len(sick_pcd.points)} pts)", yerr=sick_e, capsize=3, ecolor="k", error_kw={"lw": 0.8})
-    b2 = ax.bar(x + w/2, livox_m, w, color=colors, alpha=0.55, edgecolor="k", lw=0.5,
+    ax.bar(x + w/2, livox_m, w, color=colors, alpha=0.55, edgecolor="k", lw=0.5,
                 label=f"Livox ({len(livox_pcd.points):,} pts)", yerr=livox_e, capsize=3, ecolor="k", error_kw={"lw": 0.8})
     ax.set_xticks(x); ax.set_xticklabels(FILTERS)
     ax.set_ylabel("µs / point"); ax.set_title("Runtime by Sensor (this repo)", fontweight="bold")

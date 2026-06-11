@@ -54,10 +54,10 @@ class PointCloudValidator:
         if n_points == 0:
             raise ValueError(f"{name} is empty (0 points)")
 
-        # Check for NaNs
+        # Check for NaN/Inf
         points_array = np.asarray(pcd.points)
-        if np.isnan(points_array).any():
-            raise ValueError(f"{name} contains NaN values")
+        if not np.isfinite(points_array).all():
+            raise ValueError(f"{name} contains non-finite values (NaN or Inf)")
 
         logger.info(f"{name}: {n_points} points, bounds: {pcd.get_axis_aligned_bounding_box()}")
         return True
@@ -348,7 +348,6 @@ class LiDARFilters:
                     continue
 
                 sector_cloud = pcd.select_by_index(sector_indices)
-                sector_points = points[sector_indices]
 
                 # Adaptive radius based on local density
                 density = len(sector_indices) / max(1, (az_high - az_low))

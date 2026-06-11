@@ -4,7 +4,7 @@
 import sys
 import unittest
 from pathlib import Path
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import MagicMock
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
@@ -83,7 +83,7 @@ class TestChamferDistanceFix(unittest.TestCase):
         # Simulate the fixed error handling
         try:
             raise RuntimeError("KD-tree construction failed")
-        except Exception as e:
+        except Exception:
             result = np.nan
 
         self.assertTrue(np.isnan(result), "Should return NaN on error")
@@ -174,7 +174,7 @@ class TestLicenseFile(unittest.TestCase):
         self.assertIn("Aravind", content, "LICENSE should have author name")
         # Should NOT be generic "(c) 2024" on its own line
         lines = content.split('\n')
-        copyright_line = [l for l in lines if l.startswith('Copyright')][0]
+        copyright_line = [ln for ln in lines if ln.startswith('Copyright')][0]
         self.assertNotEqual(copyright_line.strip(), "Copyright (c) 2024",
                            "LICENSE should include author name")
 
@@ -247,10 +247,6 @@ class TestChamferSourceCodeFix(unittest.TestCase):
 
         metrics_py = Path(__file__).parent.parent / "src" / "lidar_snow_filter" / "metrics.py"
         content = metrics_py.read_text()
-
-        # Count return 0.0 statements in error handling
-        import re
-        return_zero = re.findall(r'return 0\.0(?:, 0\.0)?', content)
 
         # Should NOT have return 0.0, 0.0 for error cases
         # Check the context around Chamfer distance

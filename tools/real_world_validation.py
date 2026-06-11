@@ -139,7 +139,7 @@ class RealWorldValidator:
                 logger.error(f"  ✗ Failed: {e}")
         else:
             results["filters"]["DSOR_THESIS"] = {"error": "Thesis filters not available", "status": "skipped"}
-            logger.warning(f"  ⊘ Skipped: filters_thesis_originals module not found")
+            logger.warning("  ⊘ Skipped: filters_thesis_originals module not found")
 
         # DSOR Variant
         logger.info("DSOR_VARIANT...")
@@ -179,7 +179,7 @@ class RealWorldValidator:
                 logger.error(f"  ✗ Failed: {e}")
         else:
             results["filters"]["DROR_THESIS"] = {"error": "Thesis filters not available", "status": "skipped"}
-            logger.warning(f"  ⊘ Skipped: filters_thesis_originals module not found")
+            logger.warning("  ⊘ Skipped: filters_thesis_originals module not found")
 
         # DROR Variant
         logger.info("DROR_VARIANT...")
@@ -207,7 +207,7 @@ class RealWorldValidator:
             dror_thesis_ret = filters["DROR_THESIS"]["retention_pct"]
             dror_variant_ret = filters["DROR_VARIANT"]["retention_pct"]
 
-            logger.info(f"\nSUMMARY:")
+            logger.info("\nSUMMARY:")
             logger.info(f"  DSOR: Thesis {dsor_thesis_ret:.2f}% vs Variant {dsor_variant_ret:.2f}% "
                        f"(Δ {dsor_variant_ret - dsor_thesis_ret:+.2f}%)")
             logger.info(f"  DROR: Thesis {dror_thesis_ret:.2f}% vs Variant {dror_variant_ret:.2f}% "
