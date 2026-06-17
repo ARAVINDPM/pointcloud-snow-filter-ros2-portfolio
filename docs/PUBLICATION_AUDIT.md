@@ -1,7 +1,7 @@
 # Publication Audit
 
-This repository was created as a clean portfolio export from a private thesis
-working repository.
+This repository is a self-contained public export of the reusable code and
+synthetic pipeline from a private thesis repository.
 
 ## Included
 
